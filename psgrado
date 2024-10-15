@@ -1,0 +1,288 @@
+#include <GL/glut.h>
+#include <string.h>
+
+float rotacionX = 0.0;
+float rotacionY = 0.0;
+
+float camaraZ = 25.0; // Posición inicial de la cámara en Z
+float camarax = 0.0; // Posición inicial de la cámara en Z
+float camaray = 5.0; // Posición inicial de la cámara en Z
+
+
+// Función para dibujar el edificio
+void drawBuilding() {
+    // Edificio principal
+    glColor3f(0.5, 0.5, 0.5); // Color grissssssssssssssssssss
+    glBegin(GL_QUADS);
+    // Cara frontal
+    glVertex3f(-10.0, 0.0, 5.0);  // Esquina inferior izquierda
+    glVertex3f(10.0, 0.0, 5.0);   // Esquina inferior derecha
+    glVertex3f(10.0, 10.0, 5.0);  // Esquina superior derecha
+    glVertex3f(-10.0, 10.0, 5.0); // Esquina superior izquierda
+
+    // Cara trasera
+    glVertex3f(-10.0, 0.0, -5.0); // Esquina inferior izquierda
+    glVertex3f(-10.0, 10.0, -5.0); // Esquina superior izquierda
+    glVertex3f(10.0, 10.0, -5.0); // Esquina superior derecha
+    glVertex3f(10.0, 0.0, -5.0);  // Esquina inferior derecha
+
+    // Cara derecha
+    glVertex3f(10.0, 0.0, 5.0);   // Esquina inferior izquierda
+    glVertex3f(10.0, 0.0, -5.0);  // Esquina inferior derecha
+    glVertex3f(10.0, 10.0, -5.0); // Esquina superior derecha
+    glVertex3f(10.0, 10.0, 5.0);  // Esquina superior izquierda
+
+    // Cara izquierda
+    glVertex3f(-10.0, 0.0, -5.0); // Esquina inferior izquierda
+    glVertex3f(-10.0, 0.0, 5.0);  // Esquina inferior derecha
+    glVertex3f(-10.0, 10.0, 5.0); // Esquina superior derecha
+    glVertex3f(-10.0, 10.0, -5.0); // Esquina superior izquierda
+    glEnd();
+
+
+    ////CARA INFERIOR
+    //glVertex3f(-10.0, 0.0, -5.0); // Esquina inferior izquierda
+    //glVertex3f(-10.0, 10.0, 10.0);  // Esquina inferior derecha
+    //glVertex3f(0.0, 0.0, 5.0); // Esquina superior derecha
+    //glVertex3f(-10.0, 10.0, -5.0); // Esquina superior izquierda
+    //glEnd();
+
+    // Cara inferior
+    glBegin(GL_QUADS); // 
+    glColor3f(0.3, 0.1, 0.1);
+    glVertex3f(10.0, 0.0, -5.0);  // Esquina inferior derecha (cara derecha)
+    glVertex3f(10.0, 0.0, 5.0);   // Esquina inferior izquierda (cara derecha)
+    glVertex3f(-10.0, 0.0, 5.0);  // Esquina inferior derecha (cara izquierda)
+    glVertex3f(-10.0, 0.0, -5.0); // Esquina inferior izquierda (cara izquierda)
+    glEnd();
+
+
+    //// priemera pared (entrando al edificio)
+    //glColor3f(0.4, 0.0, 0.1);
+    //glVertex3f(-5.0, 0.0, 5.0);  // Esquina inferior izquierda
+    //glVertex3f(5.0, 0.0, 5.0);   // Esquina inferior derecha
+    //glVertex3f(5.0, 10.0, 5.0);  // Esquina superior derecha
+    //glVertex3f(-5.0, 10.0, 5.0); // Esquina superior izquierda
+
+
+
+    // Ventanas abajo izuierda 
+    glColor3f(0.0, 1.0, 1.0); // Color ciaaaaaaaaaaaaaaaaaaaaaaan
+
+    for (int i = -9; i <= -5; i += 2) { // Ventanas a la izquierda
+        glBegin(GL_QUADS);
+        glVertex3f(i - 0.5, 3.0, 5.1); // Esquina inferior izquierda
+        glVertex3f(i + 0.5, 3.0, 5.1); // Esquina inferior derecha
+        glVertex3f(i + 0.5, 5.0, 5.1); // Esquina superior derecha
+        glVertex3f(i - 0.5, 5.0, 5.1); // Esquina superior izquierda
+        glEnd();
+    }
+    for (int i = 5; i <= 9; i += 2) { // Ventanas a la derecha de la puerta
+        glBegin(GL_QUADS);
+        glVertex3f(i - 0.5, 3.0, 5.1); // Esquina inferior izquierda
+        glVertex3f(i + 0.5, 3.0, 5.1); // Esquina inferior derecha
+        glVertex3f(i + 0.5, 5.0, 5.1); // Esquina superior derecha
+        glVertex3f(i - 0.5, 5.0, 5.1); // Esquina superior izquierda
+        glEnd();
+    }
+
+    // Ventanas de arriba izquierda
+    for (int i = -9; i <= -5; i += 2) { // Ventanas a la izquierda
+        glBegin(GL_QUADS);
+        glVertex3f(i - 0.5, 8.0, 5.1); // Esquina inferior izquierda
+        glVertex3f(i + 0.5, 8.0, 5.1); // Esquina inferior derecha
+        glVertex3f(i + 0.5, 9.0, 5.1); // Esquina superior derecha
+        glVertex3f(i - 0.5, 9.0, 5.1); // Esquina superior izquierda
+        glEnd();
+    }
+    for (int i = 5; i <= 9; i += 2) { // Ventanas a la derecha de la puerta
+        glBegin(GL_QUADS);
+        glVertex3f(i - 0.5, 8.0, 5.1); // Esquina inferior izquierda
+        glVertex3f(i + 0.5, 8.0, 5.1); // Esquina inferior derecha
+        glVertex3f(i + 0.5, 9.0, 5.1); // Esquina superior derecha
+        glVertex3f(i - 0.5, 9.0, 5.1); // Esquina superior izquierda
+        glEnd();
+    }
+
+    // Puerta 
+    glColor3f(0.0, 1.0, 1.0);  // color del CIAAAAAAAAAAAAAAAAN 
+    glBegin(GL_QUADS);
+    glVertex3f(-1.5, 0.0, 5.1); // Esquina inferior izquierda
+    glVertex3f(1.5, 0.0, 5.1);  // Esquina inferior derecha
+    glVertex3f(1.5, 9.5, 5.1);  // Esquina superior derecha
+    glVertex3f(-1.5, 9.5, 5.1); // Esquina superior izquierda
+    glEnd();
+
+    // Puerta 
+    glColor3f(0.0, 1.0, 0.0);  // color del VERDEEEEEEEEEEEEE
+    glBegin(GL_QUADS);
+    glVertex3f(-0.7, 0.0, 5.2); // Esquina inferior izquierda
+    glVertex3f(0.7, 0.0, 5.2);  // Esquina inferior derecha
+    glVertex3f(0.7, 3.0, 5.2);  // Esquina superior derecha
+    glVertex3f(-0.7, 3.0, 5.2); // Esquina superior izquierda
+    glEnd();
+
+    // Barra roja entre ventanas
+    glColor3f(1.0, 0.0, 0.0); // Color rojooooooooooooooo
+    glBegin(GL_QUADS);
+    glVertex3f(-10.0, 6.0, 5.1); // Esquina inferior izquierda
+    glVertex3f(10.0, 6.0, 5.1);  // Esquina inferior derecha
+    glVertex3f(10.0, 6.5, 5.1);  // Esquina superior derecha
+    glVertex3f(-10.0, 6.5, 5.1); // Esquina superior izquierda
+    glEnd();
+
+    // Muro de enmedio
+    glColor3f(1.0, 0.0, 0.0);
+    glBegin(GL_QUADS);
+    glVertex3f(-10.0, 10.0, 5.0); // Esquina inferior izquierda
+    glVertex3f(10.0, 10.0, 5.0);  // Esquina inferior derecha
+    glVertex3f(10.0, 12.0, 5.0);  // Esquina superior derecha
+    glVertex3f(-10.0, 12.0, 5.0); // Esquina superior izquierda
+    glEnd();
+
+    // Pared amarilla horizontal en el medio
+    glColor3f(1.0, 1.0, 0.0); // Color amarillo
+    glBegin(GL_QUADS);
+    glVertex3f(-10.0, 5.0, -5.0); // Esquina izquierda trasera
+    glVertex3f(10.0, 5.0, -5.0);  // Esquina derecha trasera
+    glVertex3f(10.0, 5.0, 5.0);   // Esquina derecha delantera
+    glVertex3f(-10.0, 5.0, 5.0);  // Esquina izquierda delantera
+    glEnd();
+
+
+    // Texto "POSTGRADO"
+    glColor3f(1.0, 1.0, 1.0); // Color blancoooooooooooooooooooooooooo
+    glRasterPos3f(-3.5, 11.0, 5.1); // Posición del texto
+
+    const char* text = "POSTGRADO E INVESTIGACION";
+    glRotatef(rotacionX, 0.0, 1.0, 0.0);
+    glRotatef(rotacionY, 1.0, 0.0, 0.0);
+    for (const char* c = text; *c != '\0'; c++) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c);
+    }
+}
+
+//// Función de visualización
+//void display() {
+//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//    glLoadIdentity();
+//    gluLookAt(camarax, camaray, camaraZ,  // Posición de la cámara
+//        0.0, 5.0, 0.0,   // Punto de mira
+//        0.0, 1.0, 0.0);  // Arriba
+//
+//    glRotatef(rotacionX, 0.0, 1.0, 0.0);
+//    glRotatef(rotacionY, 1.0, 0.0, 0.0);
+//
+//    drawBuilding();
+//
+//    glutSwapBuffers();
+//}
+
+
+//// Función de re-dimensionamiento
+//void reshape(int width, int height) {
+//    glViewport(0, 0, width, height);
+//    glMatrixMode(GL_PROJECTION);
+//    glLoadIdentity();
+//    gluPerspective(45.0, (float)width / (float)height, 0.1, 100.0);
+//    glMatrixMode(GL_MODELVIEW);
+
+
+    // Ventanas y detalles omitidos por brevedad...
+
+//    // Texto "POSTGRADO"
+//    glColor3f(1.0, 1.0, 1.0);
+//    glRasterPos3f(-3.5, 11.0, 5.1);
+//    const char* text = "POSTGRADO E INVESTIGACION";
+//    for (const char* c = text; *c != '\0'; c++) {
+//        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *c);
+//    }
+//}
+
+// Función de visualización
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+    gluLookAt(camarax, camaray, camaraZ,  // Posición de la cámara
+        0.0, 5.0, 0.0,   // Punto de mira
+        0.0, 1.0, 0.0);  // Arriba
+
+    glRotatef(rotacionX, 0.0, 1.0, 0.0);
+    glRotatef(rotacionY, 1.0, 0.0, 0.0);
+
+    drawBuilding();
+
+    glutSwapBuffers();
+}
+
+// Función de re-dimensionamiento
+void reshape(int width, int height) {
+    glViewport(0, 0, width, height);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(45.0, (float)width / (float)height, 0.1, 100.0);
+    glMatrixMode(GL_MODELVIEW);
+}
+
+// Función de entrada de teclado
+void keyboard(unsigned char key, int x, int y) {
+    switch (key) {
+    case 'a': // Mover la cámara a la izquierda
+        camarax -= 1.0;
+        break;
+    case 'd': // Mover la cámara a la derecha
+        camarax += 1.0;
+        break;
+    case 'w': // Mover la cámara hacia adelante
+        camaraZ -= 1.0;
+        break;
+    case 's': // Mover la cámara hacia atrás
+        camaraZ += 1.0;
+        break;
+    default:
+        break;
+    }
+    glutPostRedisplay(); // Solicitar re-dibujo
+}
+
+// Función de entrada de teclado especial
+void specialKeyboard(int key, int x, int y) {
+    switch (key) {
+    case GLUT_KEY_LEFT: // Rotar a la izquierda
+        rotacionX -= 5.0;
+        break;
+    case GLUT_KEY_RIGHT: // Rotar a la derecha
+        rotacionX += 5.0;
+        break;
+    case GLUT_KEY_DOWN: // Rotar hacia abajo
+        rotacionY -= 5.0;
+        break;
+    case GLUT_KEY_UP: // Rotar hacia arriba
+        rotacionY += 5.0;
+        break;
+    default:
+        break;
+    }
+    glutPostRedisplay(); // Solicitar re-dibujo
+}
+
+// Inicialización
+void init() {
+    glEnable(GL_DEPTH_TEST); // Habilitar prueba de profundidad
+    glClearColor(0.0, 0.0, 0.0, 1.0); // Color de fondo
+}
+
+// Función principal
+int main(int argc, char** argv) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitWindowSize(800, 600);
+    glutCreateWindow("Edificio 3D");
+    init();
+    glutDisplayFunc(display);
+    glutReshapeFunc(reshape);
+    glutKeyboardFunc(keyboard); // Teclas 'W', 'A', 'S', 'D'
+    glutSpecialFunc(specialKeyboard); // Teclas de flecha
+    glutMainLoop();
+    return 0;
+}
