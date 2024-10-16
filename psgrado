@@ -2,83 +2,82 @@
 
 class Building {
 public:
-    float width;//ancho
-    float height;//altura
-    float depth;//projundidad
+    float width;  // Ancho
+    float height; // Altura
+    float depth;  // Profundidad
 
-    Building(float lado) : width(lado), height(lado), depth(lado) {}
+    Building(float w, float h, float d) : width(w), height(h), depth(d) {}
 
     void draw() {
-        // Color gris para el edificio
+        // Color gris para el edificio principal
         glColor3f(0.5f, 0.5f, 0.5f); // Gris
-
-        // Edificio principal
         glBegin(GL_QUADS);
+
         // Cara frontal
         glVertex3f(-width / 2, 0.0, depth / 2);
         glVertex3f(width / 2, 0.0, depth / 2);
-        glVertex3f(width / 2, height / 2, depth / 2);
-        glVertex3f(-width / 2, height / 2, depth / 2);
-
-        // Cara trasera
-        glVertex3f(-width / 2, 0.0, -depth / 2);
-        glVertex3f(-width / 2, height / 2, -depth / 2);
-        glVertex3f(width / 2, height / 2, -depth / 2);
-        glVertex3f(width / 2, 0.0, -depth / 2);
-
-        // Cara derecha
-        glVertex3f(width / 2, 0.0, depth / 2);
-        glVertex3f(width / 2, 0.0, -depth / 2);
-        glVertex3f(width / 2, height / 2, -depth / 2);
-        glVertex3f(width / 2, height / 2, depth / 2);
-
-        // Cara izquierda
-        glVertex3f(-width / 2, 0.0, -depth / 2);
-        glVertex3f(-width / 2, 0.0, depth / 2);
-        glVertex3f(-width / 2, height / 2, depth / 2);
-        glVertex3f(-width / 2, height / 2, -depth / 2);
-        glEnd();
-
-        // Cara inferior
-        glBegin(GL_QUADS);
-        glVertex3f(width / 2, 0.0, -depth / 2);
-        glVertex3f(width / 2, 0.0, depth / 2);
-        glVertex3f(-width / 2, 0.0, depth / 2);
-        glVertex3f(-width / 2, 0.0, -depth / 2);
-        glEnd();
-
-        // Techo (color rojo oscuro)
-        glColor3f(0.5f, 0.0f, 0.0f); // Rojo oscuro
-        glBegin(GL_QUADS);
-        // Techo
-        glVertex3f(-width / 2, height / 2, depth / 2);
-        glVertex3f(width / 2, height / 2, depth / 2);
-        glVertex3f(width / 2, height / 2, -depth / 2);
-        glVertex3f(-width / 2, height / 2, -depth / 2);
-        glEnd();
-
-        // Pared superior
-        glBegin(GL_QUADS);
-        glVertex3f(-width / 2, height / 2, depth / 2);
-        glVertex3f(width / 2, height / 2, depth / 2);
         glVertex3f(width / 2, height, depth / 2);
         glVertex3f(-width / 2, height, depth / 2);
 
-        glVertex3f(-width / 2, height / 2, -depth / 2);
+        // Cara trasera
+        glVertex3f(-width / 2, 0.0, -depth / 2);
         glVertex3f(-width / 2, height, -depth / 2);
         glVertex3f(width / 2, height, -depth / 2);
-        glVertex3f(width / 2, height / 2, -depth / 2);
+        glVertex3f(width / 2, 0.0, -depth / 2);
+
+        // Cara lateral derecha
+        glVertex3f(width / 2, 0.0, depth / 2);
+        glVertex3f(width / 2, 0.0, -depth / 2);
+        glVertex3f(width / 2, height, -depth / 2);
+        glVertex3f(width / 2, height, depth / 2);
+
+        // Cara lateral izquierda
+        glVertex3f(-width / 2, 0.0, -depth / 2);
+        glVertex3f(-width / 2, 0.0, depth / 2);
+        glVertex3f(-width / 2, height, depth / 2);
+        glVertex3f(-width / 2, height, -depth / 2);
         glEnd();
+
+        // Techo rojo oscuro
+        glColor3f(0.5f, 0.0f, 0.0f); // Rojo oscuro
+        glBegin(GL_QUADS);
+        glVertex3f(-width / 2, height, depth / 2);
+        glVertex3f(width / 2, height, depth / 2);
+        glVertex3f(width / 2, height, -depth / 2);
+        glVertex3f(-width / 2, height, -depth / 2);
+        glEnd();
+
+        // Sección roja superior (parte frontal)
+        glBegin(GL_QUADS);
+        glVertex3f(-width / 2, height, depth / 2);
+        glVertex3f(width / 2, height, depth / 2);
+        glVertex3f(width / 2, height + 2.0f, depth / 2);
+        glVertex3f(-width / 2, height + 2.0f, depth / 2);
+        glEnd();
+
+        // Ventanas
+        drawWindows();
+    }
+
+    void drawWindows() {
+        glColor3f(0.2f, 0.2f, 0.2f); // Ventanas grises oscuras
+        float windowWidth = width / 10.0f;
+        float windowHeight = height / 6.0f;
+
+        for (int i = -3; i <= 3; i++) {
+            glBegin(GL_QUADS);
+            glVertex3f(i * windowWidth, height / 4, depth / 2 + 0.01f);
+            glVertex3f((i + 1) * windowWidth, height / 4, depth / 2 + 0.01f);
+            glVertex3f((i + 1) * windowWidth, height / 2, depth / 2 + 0.01f);
+            glVertex3f(i * windowWidth, height / 2, depth / 2 + 0.01f);
+            glEnd();
+        }
     }
 };
 
 class Camera {
 public:
-    float camaraZ;
-    float camarax;
-    float camaray;
-    float rotacionX;
-    float rotacionY;
+    float camaraZ, camarax, camaray, rotacionX, rotacionY;
 
     Camera() : camaraZ(25.0), camarax(0.0), camaray(5.0), rotacionX(0.0), rotacionY(0.0) {}
 
@@ -90,10 +89,9 @@ public:
     }
 };
 
-Building building(20.0); // Tamaño del edificio
+Building building(20.0, 10.0, 10.0); // Dimensiones ajustadas
 Camera camera;
 
-// Función de visualización
 void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     camera.applyView();
@@ -101,7 +99,6 @@ void display() {
     glutSwapBuffers();
 }
 
-// Función de re-dimensionamiento
 void reshape(int width, int height) {
     glViewport(0, 0, width, height);
     glMatrixMode(GL_PROJECTION);
@@ -110,7 +107,6 @@ void reshape(int width, int height) {
     glMatrixMode(GL_MODELVIEW);
 }
 
-// Función de entrada de teclado
 void keyboard(unsigned char key, int x, int y) {
     switch (key) {
     case 'a': camera.camarax -= 1.0; break;
@@ -122,7 +118,6 @@ void keyboard(unsigned char key, int x, int y) {
     glutPostRedisplay();
 }
 
-// Función de entrada de teclado especial
 void specialKeyboard(int key, int x, int y) {
     switch (key) {
     case GLUT_KEY_LEFT: camera.rotacionX -= 5.0; break;
@@ -134,13 +129,11 @@ void specialKeyboard(int key, int x, int y) {
     glutPostRedisplay();
 }
 
-// Inicialización
 void init() {
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.0, 0.0, 0.0, 1.0);
 }
 
-// Función principal
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -154,4 +147,3 @@ int main(int argc, char** argv) {
     glutMainLoop();
     return 0;
 }
-
