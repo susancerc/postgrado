@@ -47,12 +47,22 @@ public:
         glVertex3f(-width / 2, height, -depth / 2);
         glEnd();
 
-        // Sección roja superior (parte frontal)
+        // División roja horizontal (simula dos pisos)
+        glColor3f(1.0f, 0.0f, 0.0f); // Rojo brillante
         glBegin(GL_QUADS);
-        glVertex3f(-width / 2, height, depth / 2);
-        glVertex3f(width / 2, height, depth / 2);
-        glVertex3f(width / 2, height + 2.0f, depth / 2);
-        glVertex3f(-width / 2, height + 2.0f, depth / 2);
+        glVertex3f(-width / 2, height / 2, depth / 2 + 0.01f);
+        glVertex3f(width / 2, height / 2, depth / 2 + 0.01f);
+        glVertex3f(width / 2, height / 2 + 0.2f, depth / 2 + 0.01f);
+        glVertex3f(-width / 2, height / 2 + 0.2f, depth / 2 + 0.01f);
+        glEnd();
+
+        // Puerta negra en la parte central
+        glColor3f(0.0f, 0.0f, 0.0f); // Negro
+        glBegin(GL_QUADS);
+        glVertex3f(-width / 8, 0.0f, depth / 2 + 0.01f);
+        glVertex3f(width / 8, 0.0f, depth / 2 + 0.01f);
+        glVertex3f(width / 8, height / 2, depth / 2 + 0.01f);
+        glVertex3f(-width / 8, height / 2, depth / 2 + 0.01f);
         glEnd();
 
         // Ventanas
