@@ -1,0 +1,118 @@
+#include <GL/glut.h>
+
+class CrustaceoCascarudo {
+public:
+    void drawBuilding() {
+        // Color del edificio
+        glColor3f(0.5f, 0.5f, 0.5f); // Gris
+
+        // Cuerpo del edificio (cubo)
+        glPushMatrix();
+        glTranslatef(0.0f, 0.0f, 0.0f);
+        glScalef(4.0f, 2.0f, 3.0f);
+        glutSolidCube(1.0); // Cuerpo principal
+        glPopMatrix();
+
+        // Techo
+        glColor3f(1.0f, 0.0f, 0.0f); // Rojo
+        glPushMatrix();
+        glTranslatef(0.0f, 1.5f, 0.0f);
+        glScalef(4.0f, 0.5f, 3.0f);
+        glutSolidCube(1.0); // Techo
+        glPopMatrix();
+
+        // Ventanas
+        drawWindows();
+
+        // Puerta
+        drawDoor();
+    }
+
+    void drawWindows() {
+        glColor3f(0.0f, 0.0f, 0.0f); // Ventanas negras
+
+        // Ventanas superiores
+        drawSingleWindow(-1.5f, 0.5f, 1.51f);
+        drawSingleWindow(1.5f, 0.5f, 1.51f);
+
+        // Ventanas inferiores
+        drawSingleWindow(-1.5f, -0.5f, 1.51f);
+        drawSingleWindow(1.5f, -0.5f, 1.51f);
+    }
+
+    void drawSingleWindow(float x, float y, float z) {
+        glPushMatrix();
+        glTranslatef(x, y, z);
+        glScalef(1.0f, 0.5f, 0.01f); // Ventanas más alargadas
+        glutSolidCube(1.0);
+        glPopMatrix();
+    }
+
+    void drawDoor() {
+        glColor3f(0.5f, 0.3f, 0.0f); // Puerta marrón
+
+        // Puerta
+        glPushMatrix();
+        glTranslatef(0.0f, -1.0f, 1.51f);
+        glScalef(1.0f, 1.5f, 0.01f);
+        glutSolidCube(1.0);
+        glPopMatrix();
+    }
+
+    void draw() {
+        drawBuilding();
+    }
+};
+
+CrustaceoCascarudo crustaceo;
+
+float camaraZ = 10.0f;
+float camaraY = 3.0f;
+float camaraX = 0.0f;
+
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+    gluLookAt(camaraX, camaraY, camaraZ, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0);
+
+    crustaceo.draw();
+
+    glutSwapBuffers();
+}
+
+void reshape(int width, int height) {
+    glViewport(0, 0, width, height);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(45.0, (float)width / (float)height, 0.1, 100.0);
+    glMatrixMode(GL_MODELVIEW);
+}
+
+void keyboard(unsigned char key, int x, int y) {
+    switch (key) {
+        case 'w': camaraZ -= 1.0f; break; // Avanzar
+        case 's': camaraZ += 1.0f; break; // Retroceder
+        case 'a': camaraX -= 1.0f; break; // Mover a la izquierda
+        case 'd': camaraX += 1.0f; break; // Mover a la derecha
+        default: break;
+    }
+    glutPostRedisplay();
+}
+
+void init() {
+    glEnable(GL_DEPTH_TEST);
+    glClearColor(0.0, 0.0, 0.0, 1.0);
+}
+
+int main(int argc, char** argv) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitWindowSize(800, 600);
+    glutCreateWindow("Crustáceo Cascarudo");
+    init();
+    glutDisplayFunc(display);
+    glutReshapeFunc(reshape);
+    glutKeyboardFunc(keyboard);
+    glutMainLoop();
+    return 0;
+}
