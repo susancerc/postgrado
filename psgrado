@@ -101,10 +101,32 @@ public:
 
 Building building(20.0, 10.0, 10.0); // Dimensiones ajustadas
 Camera camera;
+bool lightOn = true;
+
+void toggleLight() {
+    if (lightOn) {
+        glEnable(GL_LIGHTING);
+        glEnable(GL_LIGHT0);
+    }
+    else {
+        glDisable(GL_LIGHTING);
+        glDisable(GL_LIGHT0);
+    }
+}
+
+void setupLighting() {
+    GLfloat light_pos[] = { 0.0f, 10.0f, 10.0f, 1.0f }; // Posición de la luz
+    GLfloat light_color[] = { 1.0f, 1.0f, 1.0f, 1.0f }; // Color blanco
+
+    glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_color);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, light_color);
+}
 
 void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     camera.applyView();
+    toggleLight();
     building.draw();
     glutSwapBuffers();
 }
@@ -123,6 +145,7 @@ void keyboard(unsigned char key, int x, int y) {
     case 'd': camera.camarax += 1.0; break;
     case 'w': camera.camaraZ -= 1.0; break;
     case 's': camera.camaraZ += 1.0; break;
+    case 'l': lightOn = !lightOn; break; // Cambia el estado de la luz
     default: break;
     }
     glutPostRedisplay();
@@ -142,13 +165,14 @@ void specialKeyboard(int key, int x, int y) {
 void init() {
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.0, 0.0, 0.0, 1.0);
+    setupLighting();
 }
 
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(800, 600);
-    glutCreateWindow("Edificio 3D");
+    glutCreateWindow("Edificio 3D con Iluminación");
     init();
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
